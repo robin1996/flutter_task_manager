@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -121,6 +123,9 @@ class _ToDoListPageState extends State<ToDoListPage> {
                   onChanged: (bool newValue) {
                     setState(() {
                       toDos[index].done = newValue;
+                      Timer(Duration(seconds: 2), () {
+                        _removeToDo(index);
+                      });
                     });
                   },
                 );
@@ -139,6 +144,12 @@ class _ToDoListPageState extends State<ToDoListPage> {
         toDos.add(ToDo(text));
         textEditController.clear();
       }
+    });
+  }
+
+  void _removeToDo(int index) {
+    setState(() {
+      toDos.removeAt(index);
     });
   }
 }
