@@ -47,6 +47,13 @@ class ToDoListPage extends StatefulWidget {
 
 class _ToDoListPageState extends State<ToDoListPage> {
   List<ToDo> toDos = [];
+  final textEditController = TextEditingController();
+
+  @override
+  void dispose() {
+    textEditController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +77,7 @@ class _ToDoListPageState extends State<ToDoListPage> {
                 children: <Widget>[
                   Flexible(child: TextField(
                     cursorColor: Colors.black,
+                    controller: textEditController,
                   )),
                   Container(
                     child: RaisedButton(
@@ -126,12 +134,11 @@ class _ToDoListPageState extends State<ToDoListPage> {
 
   void _addToDo() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      toDos.add(ToDo("test"));
+      String text = textEditController.text;
+      if (text.isNotEmpty) {
+        toDos.add(ToDo(text));
+        textEditController.clear();
+      }
     });
   }
 }
