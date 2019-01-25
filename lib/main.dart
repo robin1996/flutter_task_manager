@@ -77,8 +77,14 @@ class _ToDoListPageState extends State<ToDoListPage> {
       body: ListView.builder(
         itemCount: toDos.length,
         itemBuilder: (context, index) {
-          return ListTile(
-            title: Text("Test")
+          return CheckboxListTile(
+            value: toDos[index].done,
+            title: Text(toDos[index].label),
+            onChanged: (bool newValue) {
+              setState(() {
+                toDos[index].done = newValue;
+              });
+            },
           );
         },
       ),
