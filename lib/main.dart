@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'UpNext',
       theme: ThemeData(
-        primarySwatch: Colors.lime,
+        primarySwatch: Colors.red,
       ),
       home: ToDoListPage(title: 'Up Next!'),
     );
@@ -28,7 +28,7 @@ class ToDo {
 // 👀 Views/Controllers 👀
 
 class ToDoListPage extends StatefulWidget {
-  ToDoListPage({Key key, this.title}) : super(key: key);
+  final String title;
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -39,7 +39,7 @@ class ToDoListPage extends StatefulWidget {
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
 
-  final String title;
+  ToDoListPage({Key key, this.title}) : super(key: key);
 
   @override
   _ToDoListPageState createState() => _ToDoListPageState();
@@ -47,18 +47,6 @@ class ToDoListPage extends StatefulWidget {
 
 class _ToDoListPageState extends State<ToDoListPage> {
   List<ToDo> toDos = [];
-
-
-  void _addToDo() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      toDos.add(ToDo("test"));
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,11 +64,44 @@ class _ToDoListPageState extends State<ToDoListPage> {
       ),
       body: Column(
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              Flexible(child: TextField()),
-              RaisedButton(onPressed: null),
-            ],
+          Container(
+            child: Container(
+              child: Row(
+                children: <Widget>[
+                  Flexible(child: TextField(
+                    cursorColor: Colors.black,
+                  )),
+                  Container(
+                    child: RaisedButton(
+                      onPressed: _addToDo,
+                      color: Colors.black,
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.add,
+                            color: Colors.white,
+                          ),
+                          Text(
+                            "Add",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                      splashColor: Colors.blueGrey.shade900,
+                    ),
+                    padding: EdgeInsets.only(left: 10.0),
+                  ),
+                ],
+              ),
+              padding: EdgeInsets.all(10.0),
+              color: Colors.white,
+            ),
+            decoration: BoxDecoration(boxShadow: [
+              BoxShadow(
+                color: Colors.black.withAlpha(50),
+                blurRadius: 10.0,
+              ),
+            ]),
           ),
           Flexible(
             child: ListView.builder(
@@ -100,11 +121,17 @@ class _ToDoListPageState extends State<ToDoListPage> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _addToDo,
-        tooltip: 'Add',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  void _addToDo() {
+    setState(() {
+      // This call to setState tells the Flutter framework that something has
+      // changed in this State, which causes it to rerun the build method below
+      // so that the display can reflect the updated values. If we changed
+      // _counter without calling setState(), then the build method would not be
+      // called again, and so nothing would appear to happen.
+      toDos.add(ToDo("test"));
+    });
   }
 }
