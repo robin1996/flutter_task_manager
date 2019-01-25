@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// 🤯  Models 🤯
+// 🤯 Models 🤯
 
 class ToDo {
   bool done = false;
@@ -74,19 +74,31 @@ class _ToDoListPageState extends State<ToDoListPage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: ListView.builder(
-        itemCount: toDos.length,
-        itemBuilder: (context, index) {
-          return CheckboxListTile(
-            value: toDos[index].done,
-            title: Text(toDos[index].label),
-            onChanged: (bool newValue) {
-              setState(() {
-                toDos[index].done = newValue;
-              });
-            },
-          );
-        },
+      body: Column(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Flexible(child: TextField()),
+              RaisedButton(onPressed: null),
+            ],
+          ),
+          Flexible(
+            child: ListView.builder(
+              itemCount: toDos.length,
+              itemBuilder: (context, index) {
+                return CheckboxListTile(
+                  value: toDos[index].done,
+                  title: Text(toDos[index].label),
+                  onChanged: (bool newValue) {
+                    setState(() {
+                      toDos[index].done = newValue;
+                    });
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addToDo,
