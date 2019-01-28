@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MainTabBar();
@@ -15,10 +14,31 @@ class MyApp extends StatelessWidget {
 // 🤯 Models 🤯
 
 class ToDo {
-  bool done = false;
   String label;
+  bool done = false;
 
   ToDo(this.label);
+}
+
+class ToDoList {
+  static final ToDoList _toDoList = ToDoList._internal();
+  List<ToDo> open = [];
+  List<ToDo> closed = [];
+
+  factory ToDoList() {
+    return _toDoList;
+  }
+  
+  ToDoList._internal();
+
+  void newToDo(ToDo toDo) {
+    open.add(toDo);
+  }
+
+  void moveToDosToClosed() {
+    closed.addAll(open.where((toDo) => toDo.done).toList());
+    open = open.where((toDo) => !toDo.done).toList();
+  }
 }
 
 // 👀 Views/Controllers 👀
@@ -61,8 +81,8 @@ class ToDoListPage extends StatefulWidget {
 }
 
 class _ToDoListPageState extends State<ToDoListPage> {
-  List<ToDo> toDos = [];
   final textEditController = TextEditingController();
+  var cleanStarted = DateTime.now();
 
   @override
   void dispose() {
@@ -123,18 +143,16 @@ class _ToDoListPageState extends State<ToDoListPage> {
           ),
           Flexible(
             child: ListView.builder(
-              itemCount: toDos.length,
+              itemCount: ToDoList().open.length,
               itemBuilder: (context, index) {
                 return CheckboxListTile(
-                  value: toDos[index].done,
-                  title: Text(toDos[index].label),
+                  value: ToDoList().open[index].done,
+                  title: Text(ToDoList().open[index].label),
                   onChanged: (bool newValue) {
                     setState(() {
-                      toDos[index].done = newValue;
-                      Timer(Duration(seconds: 2), () {
-                        _removeToDo(index);
-                      });
+                      ToDoList().open[index].done = newValue;
                     });
+                    _cleanList();
                   },
                 );
               },
@@ -149,15 +167,22 @@ class _ToDoListPageState extends State<ToDoListPage> {
     setState(() {
       String text = textEditController.text;
       if (text.isNotEmpty) {
-        toDos.add(ToDo(text));
+        ToDoList().newToDo(ToDo(text));
         textEditController.clear();
       }
     });
   }
 
-  void _removeToDo(int index) {
-    setState(() {
-      toDos.removeAt(index);
+  void _cleanList() {
+    final startTime = DateTime.now();
+    cleanStarted = startTime;
+    Timer(Duration(seconds: 2), () {
+      if (startTime == cleanStarted) {
+        setState(() {
+          ToDoList().moveToDosToClosed();
+        });
+      }
     });
   }
+
 }
