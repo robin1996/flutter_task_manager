@@ -65,74 +65,83 @@ class _ToDoListPageState extends State<ToDoListPage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Column(
-        children: <Widget>[
-          Container(
-            child: Container(
-              child: Row(
-                children: <Widget>[
-                  Flexible(child: TextField(
-                    cursorColor: Colors.black,
-                    controller: textEditController,
-                  )),
-                  Container(
-                    child: RaisedButton(
-                      onPressed: _addToDo,
-                      color: Colors.black,
-                      child: Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.add,
-                            color: Colors.white,
-                          ),
-                          Text(
-                            "Add",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ],
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          // Here we take the value from the MyHomePage object that was created by
+          // the App.build method, and use it to set our appbar title.
+          title: Text(widget.title),
+          bottom: TabBar(
+            tabs: <Widget>[
+              Tab(text: "Up Next!"),
+              Tab(text: "Archive")
+            ],
+          ),
+        ),
+        body: Column(
+          children: <Widget>[
+            Container(
+              child: Container(
+                child: Row(
+                  children: <Widget>[
+                    Flexible(child: TextField(
+                      cursorColor: Colors.black,
+                      controller: textEditController,
+                    )),
+                    Container(
+                      child: RaisedButton(
+                        onPressed: _addToDo,
+                        color: Colors.black,
+                        child: Row(
+                          children: <Widget>[
+                            Icon(
+                              Icons.add,
+                              color: Colors.white,
+                            ),
+                            Text(
+                              "Add",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                        splashColor: Colors.blueGrey.shade900,
                       ),
-                      splashColor: Colors.blueGrey.shade900,
+                      padding: EdgeInsets.only(left: 10.0),
                     ),
-                    padding: EdgeInsets.only(left: 10.0),
-                  ),
-                ],
+                  ],
+                ),
+                padding: EdgeInsets.all(10.0),
+                color: Colors.white,
               ),
-              padding: EdgeInsets.all(10.0),
-              color: Colors.white,
+              decoration: BoxDecoration(boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withAlpha(50),
+                  blurRadius: 10.0,
+                ),
+              ]),
             ),
-            decoration: BoxDecoration(boxShadow: [
-              BoxShadow(
-                color: Colors.black.withAlpha(50),
-                blurRadius: 10.0,
-              ),
-            ]),
-          ),
-          Flexible(
-            child: ListView.builder(
-              itemCount: toDos.length,
-              itemBuilder: (context, index) {
-                return CheckboxListTile(
-                  value: toDos[index].done,
-                  title: Text(toDos[index].label),
-                  onChanged: (bool newValue) {
-                    setState(() {
-                      toDos[index].done = newValue;
-                      Timer(Duration(seconds: 2), () {
-                        _removeToDo(index);
+            Flexible(
+              child: ListView.builder(
+                itemCount: toDos.length,
+                itemBuilder: (context, index) {
+                  return CheckboxListTile(
+                    value: toDos[index].done,
+                    title: Text(toDos[index].label),
+                    onChanged: (bool newValue) {
+                      setState(() {
+                        toDos[index].done = newValue;
+                        Timer(Duration(seconds: 2), () {
+                          _removeToDo(index);
+                        });
                       });
-                    });
-                  },
-                );
-              },
+                    },
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
