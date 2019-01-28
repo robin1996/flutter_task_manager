@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
 
 class ToDo {
   String label;
+  String description = "";
   bool done = false;
 
   ToDo(this.label);
@@ -150,6 +151,12 @@ class _ToDoListPageState extends State<ToDoListPage> {
                 if (index.isEven) {
                   return ListTile(
                     title: Text(ToDoList().open[(index / 2).round()].label),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ToDoViewPage()),
+                      );
+                    },
                     trailing: Checkbox(
                       value: ToDoList().open[(index / 2).round()].done,
                       onChanged: (bool newValue) {
@@ -216,6 +223,24 @@ class _ClosedListPageState extends State<ClosedListPage> {
           }
         },
       ),
+    );
+  }
+}
+
+class ToDoViewPage extends StatefulWidget {
+  @override
+  _ToDoViewPageState createState() => _ToDoViewPageState();
+}
+
+class _ToDoViewPageState extends State<ToDoViewPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("test"),
+      ),
+      body: TextField(
+      ),    
     );
   }
 }
