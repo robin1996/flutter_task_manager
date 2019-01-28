@@ -49,7 +49,7 @@ class MainTabBar extends StatelessWidget {
     return MaterialApp(
       title: 'Up Next',
       theme: ThemeData(
-        primarySwatch: Colors.red,
+        primarySwatch: Colors.teal,
         fontFamily: 'VarelaRound',
       ),
       home: DefaultTabController(
