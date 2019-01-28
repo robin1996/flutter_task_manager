@@ -239,8 +239,32 @@ class _ToDoViewPageState extends State<ToDoViewPage> {
       appBar: AppBar(
         title: Text("test"),
       ),
-      body: TextField(
-      ),    
+      body: Column(children: <Widget>[
+        Container(
+          child: TextField(
+            cursorColor: Colors.black,
+          ),
+          padding: EdgeInsets.all(15.0),
+        ),
+        Flexible(
+          child: Container(
+            padding: EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
+            child: TextField(
+              maxLines: null,
+              keyboardType: TextInputType.multiline,
+              decoration: InputDecoration(
+                labelText: "Description",
+              ),
+            ),
+          ),
+        ),
+      ]),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+
+        },
+        child: Icon(Icons.save)
+      ),
     );
   }
 }
