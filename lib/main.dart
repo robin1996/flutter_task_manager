@@ -274,6 +274,7 @@ class _ToDoViewPageState extends State<ToDoViewPage> {
           child: Container(
             padding: EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
             child: TextField(
+              cursorColor: Colors.black,
               controller: descriptionEditController,
               maxLines: null,
               keyboardType: TextInputType.multiline,
@@ -286,7 +287,11 @@ class _ToDoViewPageState extends State<ToDoViewPage> {
       ]),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-
+          setState(() {
+            widget.toDo.label = labelEditController.text;
+            widget.toDo.description = descriptionEditController.text;
+          });
+          Navigator.pop(context);
         },
         child: Icon(Icons.save)
       ),
