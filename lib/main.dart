@@ -28,7 +28,7 @@ class ToDoList {
   factory ToDoList() {
     return _toDoList;
   }
-  
+
   ToDoList._internal();
 
   void newToDo(ToDo toDo) {
@@ -50,7 +50,7 @@ class MainTabBar extends StatelessWidget {
       title: 'Up Next',
       theme: ThemeData(
         primarySwatch: Colors.red,
-        fontFamily: 'Roboto',
+        fontFamily: 'VarelaRound',
       ),
       home: DefaultTabController(
         length: 2,
@@ -59,7 +59,7 @@ class MainTabBar extends StatelessWidget {
             bottom: TabBar(
               tabs: [
                 Tab(icon: Icon(Icons.inbox)),
-                Tab(icon: Icon(Icons.check)),
+                Tab(icon: Icon(Icons.done_all)),
               ],
             ),
             title: Text('Up Next'),
@@ -67,7 +67,7 @@ class MainTabBar extends StatelessWidget {
           body: TabBarView(
             children: [
               ToDoListPage(),
-              Icon(Icons.directions_transit),
+              ClosedListPage(),
             ],
           ),
         ),
@@ -106,7 +106,8 @@ class _ToDoListPageState extends State<ToDoListPage> {
             child: Container(
               child: Row(
                 children: <Widget>[
-                  Flexible(child: TextField(
+                  Flexible(
+                      child: TextField(
                     cursorColor: Colors.black,
                     controller: textEditController,
                   )),
@@ -185,5 +186,26 @@ class _ToDoListPageState extends State<ToDoListPage> {
       }
     });
   }
+}
 
+class ClosedListPage extends StatefulWidget {
+  @override
+  _ClosedListPageState createState() => _ClosedListPageState();
+}
+
+class _ClosedListPageState extends State<ClosedListPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: ListView.builder(
+        itemCount: ToDoList().closed.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(ToDoList().closed[index].label),
+            leading: Icon(Icons.done),
+          );
+        },
+      ),
+    );
+  }
 }
