@@ -148,15 +148,17 @@ class _ToDoListPageState extends State<ToDoListPage> {
               itemCount: ToDoList().open.length * 2,
               itemBuilder: (context, index) {
                 if (index.isEven) {
-                  return CheckboxListTile(
-                    value: ToDoList().open[(index / 2).round()].done,
+                  return ListTile(
                     title: Text(ToDoList().open[(index / 2).round()].label),
-                    onChanged: (bool newValue) {
-                      setState(() {
-                        ToDoList().open[(index / 2).round()].done = newValue;
-                      });
-                      _cleanList();
-                    },
+                    trailing: Checkbox(
+                      value: ToDoList().open[(index / 2).round()].done,
+                      onChanged: (bool newValue) {
+                        setState(() {
+                          ToDoList().open[(index / 2).round()].done = newValue;
+                        });
+                        _cleanList();
+                      },
+                    ),
                   );
                 } else {
                   return Divider();
