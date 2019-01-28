@@ -50,6 +50,7 @@ class MainTabBar extends StatelessWidget {
       title: 'Up Next',
       theme: ThemeData(
         primarySwatch: Colors.red,
+        fontFamily: 'Roboto',
       ),
       home: DefaultTabController(
         length: 2,
