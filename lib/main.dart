@@ -145,18 +145,22 @@ class _ToDoListPageState extends State<ToDoListPage> {
           ),
           Flexible(
             child: ListView.builder(
-              itemCount: ToDoList().open.length,
+              itemCount: ToDoList().open.length * 2,
               itemBuilder: (context, index) {
-                return CheckboxListTile(
-                  value: ToDoList().open[index].done,
-                  title: Text(ToDoList().open[index].label),
-                  onChanged: (bool newValue) {
-                    setState(() {
-                      ToDoList().open[index].done = newValue;
-                    });
-                    _cleanList();
-                  },
-                );
+                if (index.isEven) {
+                  return CheckboxListTile(
+                    value: ToDoList().open[(index / 2).round()].done,
+                    title: Text(ToDoList().open[(index / 2).round()].label),
+                    onChanged: (bool newValue) {
+                      setState(() {
+                        ToDoList().open[(index / 2).round()].done = newValue;
+                      });
+                      _cleanList();
+                    },
+                  );
+                } else {
+                  return Divider();
+                }
               },
             ),
           ),
@@ -198,12 +202,16 @@ class _ClosedListPageState extends State<ClosedListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView.builder(
-        itemCount: ToDoList().closed.length,
+        itemCount: ToDoList().closed.length * 2,
         itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(ToDoList().closed[index].label),
-            leading: Icon(Icons.done),
-          );
+          if (index.isEven) {
+            return ListTile(
+              title: Text(ToDoList().closed[(index / 2).round()].label),
+              leading: Icon(Icons.done),
+            );
+          } else {
+            return Divider();
+          }
         },
       ),
     );
