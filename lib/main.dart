@@ -149,19 +149,20 @@ class _ToDoListPageState extends State<ToDoListPage> {
               itemCount: ToDoList().open.length * 2,
               itemBuilder: (context, index) {
                 if (index.isEven) {
+                  ToDo toDo = ToDoList().open[(index / 2).round()];
                   return ListTile(
-                    title: Text(ToDoList().open[(index / 2).round()].label),
+                    title: Text(toDo.label),
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ToDoViewPage()),
+                        MaterialPageRoute(builder: (context) => ToDoViewPage(toDo: toDo)),
                       );
                     },
                     trailing: Checkbox(
-                      value: ToDoList().open[(index / 2).round()].done,
+                      value: toDo.done,
                       onChanged: (bool newValue) {
                         setState(() {
-                          ToDoList().open[(index / 2).round()].done = newValue;
+                          toDo.done = newValue;
                         });
                         _cleanList();
                       },
@@ -228,20 +229,43 @@ class _ClosedListPageState extends State<ClosedListPage> {
 }
 
 class ToDoViewPage extends StatefulWidget {
+  ToDoViewPage({Key key, this.toDo}) : super(key: key);
+
+  final toDo;
+
   @override
   _ToDoViewPageState createState() => _ToDoViewPageState();
 }
 
 class _ToDoViewPageState extends State<ToDoViewPage> {
+
+  final labelEditController = TextEditingController();
+  final descriptionEditController = TextEditingController();
+
+  @override
+  void dispose() {
+    labelEditController.dispose();
+    descriptionEditController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    labelEditController.text = widget.toDo.label;
+    descriptionEditController.text = widget.toDo.description;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("test"),
+        title: Text(widget.toDo.label),
       ),
       body: Column(children: <Widget>[
         Container(
           child: TextField(
+            controller: labelEditController,
             cursorColor: Colors.black,
           ),
           padding: EdgeInsets.all(15.0),
@@ -250,6 +274,7 @@ class _ToDoViewPageState extends State<ToDoViewPage> {
           child: Container(
             padding: EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
             child: TextField(
+              controller: descriptionEditController,
               maxLines: null,
               keyboardType: TextInputType.multiline,
               decoration: InputDecoration(
